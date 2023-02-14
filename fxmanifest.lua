@@ -6,15 +6,15 @@ description 'Simple Paycheck System [FREE RELEASE]'
 documentation 'https://docs.sloppydesigns.com/free/sd-paycheck'
 version '1.0.0'
 
-shared_script 'config.lua'
+shared_scripts {
+  -- '@es_extended/imports.lua', -- Uncomment for ESX
+  'config.lua'
+}
+
 client_script 'client/main.lua'
 server_scripts {
   '@oxmysql/lib/MySQL.lua',
   'server/main.lua'
-}
-
-dependencies {
-  'qb-target',
 }
 
 lua54 'yes'

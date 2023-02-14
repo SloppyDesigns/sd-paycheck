@@ -2,6 +2,25 @@ Config = {}
 Config.Debug = false
 Config.Target = 'qb-target' -- qb-target / qtarget
 
+-- Framework Detection
+if GetResourceState('es_extended') == 'started' then
+    Config.Framework = "ESX"
+elseif GetResourceState('qb-core') == 'started' then
+    Config.Framework = "QBCore"
+end
+
+-- Notification
+local isServer = IsDuplicityVersion()
+if isServer then
+    Config.Notification = function(source, title, message, length, type)
+        TriggerClientEvent('sd-notify:Notify', source, title, message, length, type)
+    end
+else
+    Config.Notification = function(title, message, length, type)
+        exports['sd-notify']:Notify(title, message, length, type)
+    end
+end
+
 -- Pay Paycheck in Cash other wise deposited to bank
 Config.CashOut = false
 

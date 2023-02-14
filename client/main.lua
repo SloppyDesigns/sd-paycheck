@@ -1,4 +1,6 @@
-QBCore = exports['qb-core']:GetCoreObject()
+if Config.Framework == 'QBCore' then
+    QBCore = exports['qb-core']:GetCoreObject()
+end
 
 local function GetDayAsString(day)
     if day == 0 then return 'Sunday' end
@@ -27,11 +29,7 @@ CreateThread(function()
         SetModelAsNoLongerNeeded(hash)
         TaskStartScenarioInPlace(PayCheckNPC, 'WORLD_HUMAN_HANG_OUT_STREET')
 
-        exports[Config.Target]:AddEntityZone('PayCheckNPC', PayCheckNPC, {
-            name = "PayCheckNPC",
-            debugPoly = Config.Debug,
-            useZ = true
-        }, {
+        exports[Config.Target]:AddTargetEntity(PayCheckNPC, {
             options = {
                 {
                     event = 'sd-paycheck:client:CollectPaycheck',
@@ -69,7 +67,7 @@ RegisterNetEvent('sd-paycheck:client:CollectPaycheck', function()
         if Today == Config.PayCheckDay then
             TriggerServerEvent('sd-paycheck:server:CollectPaycheck')
         else
-            QBCore.Functions.Notify("Come Back " .. GetDayAsString(Config.PayCheckDay) .. " To Collect Your PayCheck", "error")
+            Config.Notification('Paycheck', 'Come Back ' .. GetDayAsString(Config.PayCheckDay) .. ' To Collect Your PayCheck', 5000, 'error')
         end
     end
 end)
